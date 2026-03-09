@@ -1,0 +1,27 @@
+project: my-app
+version: "1.0.0"
+
+servers:
+  production:
+    host: "192.168.1.100"
+    port: 22
+    user: "deploy"
+    key: "~/.ssh/id_rsa"
+
+  staging:
+    host: "192.168.1.101"
+    port: 22
+    user: "deploy"
+    key: "~/.ssh/id_rsa"
+
+deploy:
+  steps:
+    - name: "Pull latest code"
+      command: "cd /app && git pull origin main"
+    - name: "Build"
+      command: "cd /app && go build -o bin/app ./cmd/app"
+
+  rollback:
+    steps:
+      - name: "Rollback to previous"
+        command: "cd /app && git checkout HEAD~1"
